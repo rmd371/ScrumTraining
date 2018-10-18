@@ -20,7 +20,7 @@ class Shield {
 
 	enemyFire() {
 		const energyToRemove = 1000;
-		if(this.isUp) {
+		if(this.isUp && this.damaged === false) {
 			if(this.energyLevel >= energyToRemove) {
 				this.transferEnergy(-energyToRemove);
 			}
