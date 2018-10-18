@@ -27,7 +27,18 @@ describe("shield", function() {
         const fullShipEnergy = ship.shipEnergy;
         ship.transferEnergyToShield(200, shield);
         expect(ship.shipEnergy).toBe(79800);
+    });
+
+    it('shield should receive energy from ship', function () {
+        const fullShipEnergy = ship.shipEnergy;
+        ship.transferEnergyToShield(200, shield);
         expect(shield.energyLevel).toBe(9201);
+    });
+
+    it('shield should not exceed max energy', function () {
+        const fullShipEnergy = ship.shipEnergy;
+        ship.transferEnergyToShield(2000, shield);
+        expect(shield.energyLevel).toBe(10000);
     });
 
     it ('should start with 9001 units of energy', function() {
