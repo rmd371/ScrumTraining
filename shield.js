@@ -1,8 +1,8 @@
-class Shield {
+class Shield extends Subsystem {
 	constructor(game, energyLevel = 9001) {
+		super();
 		this.isUp = false;
 		this.energyLevel = energyLevel;
-		this.damaged = false;
 		this.game = game;
 	}
 
@@ -12,10 +12,6 @@ class Shield {
 
 	transferEnergy(energyToTransfer) {
 		this.energyLevel = Math.max(0, Math.min(this.energyLevel + energyToTransfer, 10000));
-	}
-
-	damage() {
-		this.damaged = true;
 	}
 
 	enemyFire(energyToRemove = 1000) {
