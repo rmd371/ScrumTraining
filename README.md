@@ -1,1 +1,2 @@
 # ScrumTraining
+* Eric wuz here!
