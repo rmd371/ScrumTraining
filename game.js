@@ -1,4 +1,4 @@
-class Game {
+class Ship {
 	constructor() {
 		this.shield = new Shield();
 		this.engine = { damaged: false, damage: () => this.damaged = true }

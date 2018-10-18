@@ -1,9 +1,9 @@
 class Shield {
-	constructor(game, energyLevel = 9001) {
+	constructor(ship, energyLevel = 9001) {
 		this.isUp = false;
 		this.energyLevel = energyLevel;
 		this.damaged = false;
-		this.game = game;
+		this.ship = ship;
 	}
 
 	raise() {
@@ -28,11 +28,11 @@ class Shield {
 				if(this.energyLevel > 0) {
 					this.transferEnergy(-this.energyLevel);
 				}
-				this.game.damageRandomSystem();
+				this.ship.damageRandomSystem();
 			}
 		}
 		else {
-			this.game.damageRandomSystem();
+			this.ship.damageRandomSystem();
 		}
 	}
 }
