@@ -1,11 +1,11 @@
 describe("shield", function() {
     let shield;
-    let game;
+    let ship;
 
     beforeEach(() => {
-        game = new Game();
-        shield = new Shield(game);
-        spyOn(game, "damageRandomSystem");
+        ship = new Ship();
+        shield = new Shield(ship);
+        spyOn(ship, "damageRandomSystem");
     });
 
     it ('starts out lowered', function() {
@@ -46,7 +46,7 @@ describe("shield", function() {
         shield.raise();
         shield.enemyFire();
         
-        expect(game.damageRandomSystem).toHaveBeenCalled();
+        expect(ship.damageRandomSystem).toHaveBeenCalled();
     });
 
     it ('should not remove energy when shield is down', function() {
@@ -70,6 +70,6 @@ describe("shield", function() {
         shield.damage();
         shield.enemyFire(5000);
 
-        expect(game.damageRandomSystem).toHaveBeenCalled();        }
+        expect(ship.damageRandomSystem).toHaveBeenCalled();        }
     );
 });
