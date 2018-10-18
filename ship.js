@@ -1,9 +1,9 @@
 class Ship {
 	constructor() {
 		this.shield = new Shield();
+		this.shipEnergy = 80000;
 		this.engine = { damaged: false, damage: () => this.damaged = true }
 		this.weapon = { damaged: false, damage: () => this.damaged = true }
-
 	}
 
 	damageRandomSystem() {
@@ -22,6 +22,11 @@ class Ship {
 
     restAndRepair(days) {
         this.shield.restAndRepair(days);
+	}
+
+	transferEnergyToShield(energyReseived, shield) {
+		this.shipEnergy = Math.max(this.shipEnergy - energyReseived, 0);
+		shield.energyLevel = Math.min(shield.energyLevel + energyReseived, 10000);
 	}
 }
 

@@ -10,19 +10,31 @@ class Shield extends Subsystem {
 		this.isUp = true;
 	}
 
-	transferEnergy(energyToTransfer) {
-		this.energyLevel = Math.max(0, Math.min(this.energyLevel + energyToTransfer, 10000));
+	receiveEnergyFromShip(energyToTransfer) {
+	    const storedEnergyLevel = this.energyLevel;
+		this.energyLevel = Math.min(this.energyLevel + energyToTransfer, 10000);
+
+		if (this.energyLevel > 10000) {
+            const additionEnergyLevel =this.energyLevel - storedEnergyLevel;
+            if (additionEnergyLevel > 0) {
+                sendEnergyBacktoShip(additionEnergyLevel);
+            }
+		}
 	}
+
+	sendEnergyBacktoShip(energy){
+	    //do something
+    }
 
 	enemyFire(energyToRemove = 1000) {
 		// const energyToRemove = 1000;
 		if(this.isUp && this.damaged === false) {
 			if(this.energyLevel >= energyToRemove) {
-				this.transferEnergy(-energyToRemove);
+				this.energyLevel -= energyToRemove;
 			}
 			else {
 				if(this.energyLevel > 0) {
-					this.transferEnergy(-this.energyLevel);
+					this.receiveEnergyFromShip(-this.energyLevel);
 				}
 				this.game.damageRandomSystem();
 			}
