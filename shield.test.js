@@ -57,11 +57,18 @@ describe("shield", function() {
         expect(currentEnergy).toBe(shield.energyLevel);
     });
 
+    it ('should remove energy when shield is down', function() {
+        const currentEnergy = shield.energyLevel;
+        shield.raise();
+        shield.enemyFire(2000);
+
+        expect(currentEnergy - 2000).toBe(shield.energyLevel);
+    });
 
     it('shield is up but damaged, next hit damaged random subsystem', function(){
         shield.raise();
         shield.damage();
-        shield.enemyFire();
+        shield.enemyFire(5000);
 
         expect(game.damageRandomSystem).toHaveBeenCalled();        }
     );
