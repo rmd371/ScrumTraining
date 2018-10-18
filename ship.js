@@ -3,6 +3,7 @@ class Ship {
 		this.shield = new Shield();
 		this.engine = { damaged: false, damage: () => this.damaged = true }
 		this.weapon = { damaged: false, damage: () => this.damaged = true }
+
 	}
 
 	damageRandomSystem() {
@@ -18,4 +19,9 @@ class Ship {
 			this.weapon.damage();
 		}
 	}
+
+    restAndRepair(days) {
+        this.shield.restAndRepair(days);
+	}
 }
+

@@ -57,7 +57,7 @@ describe("shield", function() {
         expect(currentEnergy).toBe(shield.energyLevel);
     });
 
-    it ('should remove energy when shield is down', function() {
+    it ('should remove energy when shield is up', function() {
         const currentEnergy = shield.energyLevel;
         shield.raise();
         shield.enemyFire(2000);

@@ -1,8 +1,20 @@
 class Subsystem {
     constructor() {
-        this.damaged = false;
+
+        // subsystems can take damaged, and be repaired
+        //
+        this.damageTakenInDays = 0;
+        // this.damaged = false;
     }
-    damage() {
-        this.damaged = true;
+    get damaged(){
+        return this.damageTakenInDays !== 0;
+    }
+
+    damage(daysOfDamage) {
+    this.damageTakenInDays += daysOfDamage;
+    }
+
+    restAndRepair(daysRested){
+        this.damageTakenInDays =  Math.max(0, this.damageTakenInDays-daysRested);
     }
 }
