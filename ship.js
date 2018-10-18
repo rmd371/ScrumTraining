@@ -1,6 +1,7 @@
 class Ship {
 	constructor() {
 		this.shield = new Shield();
+		this.shipEnergy = 80000;
 		this.engine = { damaged: false, damage: () => this.damaged = true }
 		this.weapon = { damaged: false, damage: () => this.damaged = true }
 	}
@@ -17,5 +18,10 @@ class Ship {
 		else if(subsystemNbr === 3) {
 			this.weapon.damage();
 		}
+	}
+
+	transferEnergyToShield(energyReseived, shield) {
+		this.shipEnergy = Math.max(this.shipEnergy - energyReseived, 0);
+		shield.energyLevel = Math.min(shield.energyLevel + energyReseived, 10000);
 	}
 }
