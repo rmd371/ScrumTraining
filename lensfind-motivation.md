@@ -128,7 +128,6 @@ case SPOT_SPECIMEN_UPDATE:
   return set(stateToSpotSpecimen(action.plateNum, action.spotNum), action.specimen, state);
 ```
 
-I think I got the plain js above correct, but that amount of mapping, spreading, ternary logic, and indentation is hard to read and easy to mess up.  
-The lensFind solution just continues to repeat the same patterns and the reducer code is very readable.
+I think I got the plain js above correct, but that amount of mapping, spreading, ternary logic, and indentation is hard to read and easy to mess up. The lensFind solution just continues to repeat the same patterns and the reducer code is very readable.
 
 In conclusion, the `lensFind` function builds on top of ramda lenses to give us lots of little reusable parts that hopefully make our code easier to read, more difficult to make mistakes in, and easier to test. 
