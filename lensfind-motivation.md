@@ -52,7 +52,7 @@ Now I hope I'm starting to convince you.  Below are the benefits I see...
 1) Reuse of the predicate from the getter `pt => pt.id === ptId` rather than duplicating it
 2) One less branching operation since there is no need for a ternary operation `? action.id : pt`
 3) No need use property `plateTemplates` (much less specifying it twice)
-4) Using `lensFind` simply reads better
+4) Using `lensFind` simply reads better.
 
 Additionally, I was working with plate templates that contained a series of plates which in turn contained a series of spots on the plate.  The users wanted a screen where all plates/spots in the template could be edited.  The additional state looked like the following...
 
