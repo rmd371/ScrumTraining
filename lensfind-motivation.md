@@ -28,7 +28,7 @@ When the user selects a template to edit, the app needs to copy that template in
 
 ```js
 // with the ramda find method...
-case: TEMPLATE_SELECTED
+case TEMPLATE_SELECTED:
   return {...state, selTemplate: find(t => t.id === action.id, state.templates)};
 ```
 
@@ -39,7 +39,7 @@ const templatesLens = lensProp('templates');
 const stateToTemplateLens = id => compose(templatesLens, lensFind(t => t.id === id)); 
 
 // inside reducer (using the ramda get function)
-case: TEMPLATE_SELECTED
+case TEMPLATE_SELECTED:
   return {...state, selTemplate: get(stateToTemplateLens(action.id), state)};
 ```
 
@@ -49,13 +49,13 @@ Okay, I probably haven't conviced you yet since lensFind requires some extra len
 
 ```js
 //with plain.js...
-case: TEMPLATE_SAVE
+case TEMPLATE_SAVE:
   return {...state, templates: state.templates.map(t => t.id === state.selTemplate.id ? state.selTemplate : t)};
 ```
 
 ```js
 //with lensFind (reusing stateToTemplateLens from above with the ramda set function)...	
-case: PLATE_TEMPLATE_SAVE
+case PLATE_TEMPLATE_SAVE:
   return set(stateToTemplateLens(state.selTemplate.id), state.selTemplate, state);
 ```
 
@@ -96,7 +96,7 @@ Upon the user updating a plate name, I would do something like the following in 
 
 ```js
 //with map...
-case: PLATE_NAME_UPDATE
+case: PLATE_NAME_UPDATE:
   return {
     ...state,
     plates: state.plates.map(p => p.plateNum === action.plateNum ? { ...p, name: action.plateName } : p);
@@ -109,7 +109,7 @@ const platesLens = lensProp('plates');
 const stateToPlateLens = plateNum => compose(platesLens, lensFind(p => p.plateNum === plateNum));
 const stateToPlateNameLens = plateNum => compose(stateToPlateLens(plateNum), lensProp('name'));
 
-case: PLATE_NAME_UPDATE
+case: PLATE_NAME_UPDATE:
   return set(stateToPlateNameLens(action.plateNum), action.plateName, state);
 ```
 
