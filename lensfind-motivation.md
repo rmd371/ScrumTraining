@@ -91,10 +91,13 @@ I'll assume we have a reducer that has it's slice of state beginning at the `sel
 ```js
 //with map...
 case: PLATE_NAME_UPDATE
-  return state.plates.map(p => p.plateNum === action.plateNum
-    ? { ...p, name: action.plateName } 
-    : p
-  );
+  return {
+    ...state,
+    plates: state.plates.map(p => p.plateNum === action.plateNum
+      ? { ...p, name: action.plateName } 
+      : p      
+    );
+  }
 ```
 
 ```js
