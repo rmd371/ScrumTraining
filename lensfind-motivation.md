@@ -112,17 +112,20 @@ Assuming you're familar with lenses, the reducer code that makes use of `lensFin
 ```js
 //with plain js...
 case SPOT_SPECIMEN_UPDATE:
-  return state.map(p => p.plateNum === action.plateNum
-    ? {
-      ...p,
-      spots: p.spots.map(s => s.spotNum === action.spotNum 
-        ? {
-          ...s,
-          specimen: action.specimen
-        } 
-        : s)
-    } 
-    : p);
+  return {
+    ...state,
+    state.plates.map(p => p.plateNum === action.plateNum
+      ? {
+        ...p,
+        spots: p.spots.map(s => s.spotNum === action.spotNum 
+          ? {
+            ...s,
+            specimen: action.specimen
+          } 
+          : s)
+      } 
+      : p)
+  }
 ```
 ```js
 //with lensFind we could create the following reusable lenses (using the ramda lensProp, compose, and set functions)...	
