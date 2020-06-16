@@ -55,7 +55,7 @@ case TEMPLATE_SAVE:
 
 ```js
 //with lensFind (reusing stateToTemplateLens from above with the ramda set function)...	
-case PLATE_TEMPLATE_SAVE:
+case TEMPLATE_SAVE:
   return set(stateToTemplateLens(state.selTemplate.id), state.selTemplate, state);
 ```
 
