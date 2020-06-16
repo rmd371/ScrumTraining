@@ -13,55 +13,59 @@ Our structure in state looked like the following...
 
 ```js
 {
-  plateTemplates: [
+  templates: [
     {id: 1, name: 'Influenza', ...},
     {id: 2, name: 'Covid-19', ...},
     ...
   ],
-  selPlateTemplate: undefined,
+  selTemplate: undefined,
 }
 ```
 
-When the user selects a plate template to edit, the app needs to copy that template in the selectedPlateTemplate field to store temporary edits before the user is ready to save.  The reducer is notified of this task by having an action with a plate template ID (ptId) in it passed to it...
+When the user selects a template to edit, the app needs to copy that template in the `selTemplate` field to store temporary edits before the user is ready to save.  The reducer is notified of this task by having an action with a template ID passed to it...
+
+`action = { type: 'TEMPLATE_SELECTED', id: 2 }`
 
 ```js
 // with the ramda find method...
-case: PLATE_TEMPLATE_SELECTED
-  return {...state, selectedPlateTemplate: find(pt => pt.id === action.ptId, state.plateTemplates)};
+case: TEMPLATE_SELECTED
+  return {...state, selTemplate: find(t => t.id === action.id, state.templates)};
 ```
 
 ```js
 //with lensFind...
-//outside reducer
-const plateTemplatesLens = lensProp('plateTemplates');
-const stateToSelPtLens = ptId => compose(plateTemplateLens, lensFind(pt => pt.id === ptId)); 
+//outside reducer (using ramda compose & lensProp)
+const templatesLens = lensProp('templates');
+const stateToTemplateLens = id => compose(templatesLens, lensFind(t => t.id === id)); 
 
-// inside reducer
-case: PLATE_TEMPLATE_SELECTED
-  return {...state, selectedPlateTemplate: get(stateToSelPtLens(action.ptId), state)};
+// inside reducer (using the ramda get function)
+case: TEMPLATE_SELECTED
+  return {...state, selTemplate: get(stateToTemplateLens(action.id), state)};
 ```
 
-Okay, I probably haven't conviced you yet since lensFind requires some extra lens setup code.  Now let's look at what happens when the user want to save their changes back to the main list...
+Okay, I probably haven't conviced you yet since lensFind requires some extra lens setup code.  Note that the "outside reducer" code can go at the top of the reducer file or in a separate file that could be shared with selectors.  Now let's look at what happens when the user want to save their changes back to the main list...
+
+`action = { type: 'TEMPLATE_SAVE' }`
 
 ```js
 //with plain.js...
-case: PLATE_TEMPLATE_SAVE
-  return {...state, plateTemplates: state.plateTemplates.map(pt => pt.ptId === action.id ? action.pt : pt)};
+case: TEMPLATE_SAVE
+  return {...state, templates: state.templates.map(t => t.id === state.selTemplate.id ? state.selTemplate : t)};
 ```
 
 ```js
-//with lensFind (reusing stateToSelPtLens from above)...	
+//with lensFind (reusing stateToTemplateLens from above with the ramda set function)...	
 case: PLATE_TEMPLATE_SAVE
-  return set(stateToSelPtLens(action.id), action.pt, state);
+  return set(stateToTemplateLens(state.selTemplate.id), state.selTemplate, state);
 ```
 
 Now I hope I'm starting to convince you.  Below are the benefits I see...
-1) Reuse of the predicate from the getter `pt => pt.id === ptId` rather than duplicating it
-2) One less branching operation since there is no need for a ternary operation `? action.id : pt`
-3) No need use property `plateTemplates` (much less specifying it twice)
+1) Reuse of the predicate from the getter `t => t.id === id` rather than duplicating it
+2) One less branching operation since there is no need for a ternary operation `? state.selTemplate : t`
+3) No need use property `templates` (much less specifying it twice)
 4) Using `lensFind` simply reads better.
 
-Additionally, I was working with plate templates that contained a series of plates which in turn contained a series of spots on the plate.  The users wanted a screen where all plates/spots in the template could be edited.  The additional state looked like the following...
+To add another requirement, I was working with templates that contained a series of plates which in turn contained a series of spots on the plate.  The users wanted a screen where all plates/spots in the template could be edited.  The additional state looked like the following...
 
 ```js
 {
@@ -86,7 +90,9 @@ Additionally, I was working with plate templates that contained a series of plat
 }
 ```
 
-I'll assume we have a reducer that has it's slice of state beginning at the `selectedPlateTemplate` property (see how to do this [here](http://www.google.com)).  Upon the user updating a plate name on the plate with a new specimen, I would do something like the following in my reducer...
+Upon the user updating a plate name, I would do something like the following in my reducer...
+
+`action = { type: 'PLATE_NAME_UPDATE', plateNum: 2, plateName: 'new name' }`
 
 ```js
 //with map...
@@ -98,7 +104,7 @@ case: PLATE_NAME_UPDATE
 ```
 
 ```js
-//with lensFind we could create the following reusable lenses (using the ramda lensProp, compose, and set functions)...	
+//with lensFind...	
 const platesLens = lensProp('plates');
 const stateToPlateLens = plateNum => compose(platesLens, lensFind(p => p.plateNum === plateNum));
 const stateToPlateNameLens = plateNum => compose(stateToPlateLens(plateNum), lensProp('name'));
@@ -109,8 +115,10 @@ case: PLATE_NAME_UPDATE
 
 Assuming you're familar with lenses, the reducer code that makes use of `lensFind` is easier to follow.  It has no explicit speading, looping, ternary operation, or indented code blocks.  Now, let's update a spot...
 
+`action = { type: 'SPOT_SPECIMEN_UPDATE', plateNum: 1, spotNum: 96, specimen: 'SPEC7891'}`
+
 ```js
-//with plain js...
+//with map...
 case SPOT_SPECIMEN_UPDATE:
   return {
     ...state,
@@ -128,7 +136,7 @@ case SPOT_SPECIMEN_UPDATE:
   }
 ```
 ```js
-//with lensFind we could create the following reusable lenses (using the ramda lensProp, compose, and set functions)...	
+//with lensFind...	
 const spotsLens = lensProp('spots');
 const stateToSpotLens = (plateNum, spotNum) => compose(stateToPlateLens(plateNum), spotsLens, lensFind(s => s.spotNum === spotNum));
 const stateToSpotSpecimen = (plateNum, spotNum) => compose(stateToSpotLens(plateNum, spotNum), lensProp('specimen'));
@@ -138,6 +146,6 @@ case SPOT_SPECIMEN_UPDATE:
   return set(stateToSpotSpecimen(action.plateNum, action.spotNum), action.specimen, state);
 ```
 
-I think I got the plain js above correct, but that amount of mapping, spreading, ternary logic, and indentation is hard to read and easy to mess up. The lensFind solution just continues to repeat the same patterns and the reducer code remains very readable.
+I think I got the map version above correct, but that amount of mapping, spreading, ternary logic, and indentation is hard to read and easy to mess up. The lensFind solution just continues to repeat the same patterns and the reducer code remains very readable.
 
 In conclusion, the `lensFind` function builds on top of ramda lenses to give us lots of little reusable parts that hopefully make our code easier to read, more difficult to make mistakes in, and easier to test. 
