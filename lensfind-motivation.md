@@ -84,10 +84,10 @@ I'll assume we have a reducer that has it's slice of state beginning at the `sel
 ```js
 //with map...
 case: PLATE_NAME_UPDATE
-	return state.plates.map(p => p.plateNum === action.plateNum
-		? { ...p, name: action.plateName } 
-		: p
-	);
+  return state.plates.map(p => p.plateNum === action.plateNum
+    ? { ...p, name: action.plateName } 
+    : p
+  );
 ```
 
 ```js
@@ -97,7 +97,7 @@ const stateToPlateLens = plateNum => compose(platesLens, lensFind(p => p.plateNu
 const stateToPlateNameLens = plateNum => compose(stateToPlateLens(plateNum), lensProp('name'));
 
 case: PLATE_NAME_UPDATE
-	return set(stateToPlateNameLens(action.plateNum), action.plateName, state);
+  return set(stateToPlateNameLens(action.plateNum), action.plateName, state);
 ```
 
 Assuming you're familar with lenses, the reducer code that makes use of `lensFind` is easier to follow.  It has no explicit speading, looping, ternary operation, or indented code blocks.  Now, let's update a spot...
@@ -125,7 +125,7 @@ const stateToSpotSpecimen = (plateNum, spotNum) => compose(stateToSpotLens(plate
 
 // inside reducer
 case SPOT_SPECIMEN_UPDATE:
-	return set(stateToSpotSpecimen(action.plateNum, action.spotNum), action.specimen, state);
+  return set(stateToSpotSpecimen(action.plateNum, action.spotNum), action.specimen, state);
 ```
 
 I think I got the plain js above correct, but that amount of mapping, spreading, ternary logic, and indentation is hard to read and easy to mess up.  
