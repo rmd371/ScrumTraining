@@ -1,4 +1,11 @@
 # lensFind motivation
+## Prereqs
+Familiarity with...
+1) composing functions
+2) redux
+3) ramda functions
+4) lenses
+
 ## Purpose
 When using redux reducers state must be updated while maintaining immutability.  I found myself creating hard to understand logic in reducers that needed to update lists.  I wanted an easier way to update an item in a list.  
 
