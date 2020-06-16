@@ -6,12 +6,12 @@ Our structure in state looked like the following...
 
 ```js
 {
-	plateTemplates: [
-		{id: 1, name: 'Influenza', ...},
+  plateTemplates: [
+    {id: 1, name: 'Influenza', ...},
     {id: 2, name: 'Covid-19', ...},
     ...
-	],
-	selPlateTemplate: undefined,
+  ],
+  selPlateTemplate: undefined,
 }
 ```
 
@@ -20,7 +20,7 @@ When the user selects a plate template to edit, the app needs to copy that templ
 ```js
 // with the ramda find method...
 case: PLATE_TEMPLATE_SELECTED
-	return {...state, selectedPlateTemplate: find(pt => pt.id === action.ptId, state.plateTemplates)};
+  return {...state, selectedPlateTemplate: find(pt => pt.id === action.ptId, state.plateTemplates)};
 ```
 
 ```js
@@ -31,7 +31,7 @@ const stateToSelPtLens = ptId => compose(plateTemplateLens, lensFind(pt => pt.id
 
 // inside reducer
 case: PLATE_TEMPLATE_SELECTED
-	return {...state, selectedPlateTemplate: get(stateToSelPtLens(action.ptId), state)};
+  return {...state, selectedPlateTemplate: get(stateToSelPtLens(action.ptId), state)};
 ```
 
 Okay, I probably haven't conviced you yet since lensFind requires some extra lens setup code.  Now let's look at what happens when the user want to save their changes back to the main list...
@@ -39,13 +39,13 @@ Okay, I probably haven't conviced you yet since lensFind requires some extra len
 ```js
 //with plain.js...
 case: PLATE_TEMPLATE_SAVE
-	return {...state, plateTemplates: state.plateTemplates.map(pt => pt.ptId === action.id ? action.pt : pt)};
+  return {...state, plateTemplates: state.plateTemplates.map(pt => pt.ptId === action.id ? action.pt : pt)};
 ```
 
 ```js
 //with lensFind (reusing stateToSelPtLens from above)...	
 case: PLATE_TEMPLATE_SAVE
-	return set(stateToSelPtLens(action.id), action.pt, state);
+  return set(stateToSelPtLens(action.id), action.pt, state);
 ```
 
 Now I hope I'm starting to convince you.  Below are the benefits I see...
@@ -58,24 +58,24 @@ Additionally, I was working with plate templates that contained a series of plat
 
 ```js
 {
-	plates: [
-	{
-			plateNum: 1
-			name: 'Plate One',
-			spots: [
-				{ spotNum: 1, specimen: 'CTRL0001' },
-				{ spotNum: 2, specimen: 'CTRL0002' },
-				{ spotNum: 3, specimen: 'SPEC1234' },
-				...
-				{ spotNum: 96, specimen: 'SPEC9876' },
-			]
-		},
-		{
-			plateNum: 2
-			name: 'Plate Two',
-			spots: [...]
-		},
-	]
+  plates: [
+    {
+      plateNum: 1
+      name: 'Plate One',
+      spots: [
+        { spotNum: 1, specimen: 'CTRL0001' },
+        { spotNum: 2, specimen: 'CTRL0002' },
+        { spotNum: 3, specimen: 'SPEC1234' },
+        ...
+        { spotNum: 96, specimen: 'SPEC9876' },
+      ]
+    },
+    {
+      plateNum: 2
+      name: 'Plate Two',
+      spots: [...]
+    },
+  ]
 }
 ```
 
