@@ -8,8 +8,8 @@ Our structure in state looked like the following...
 {
 	plateTemplates: [
 		{id: 1, name: 'Influenza', ...},
-        	{id: 2, name: 'Covid-19', ...},
-        	...
+    {id: 2, name: 'Covid-19', ...},
+    ...
 	],
 	selPlateTemplate: undefined,
 }
@@ -59,7 +59,7 @@ Additionally, I was working with plate templates that contained a series of plat
 ```js
 {
 	plates: [
-		{
+	{
 			plateNum: 1
 			name: 'Plate One',
 			spots: [
