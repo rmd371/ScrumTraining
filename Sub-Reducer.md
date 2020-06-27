@@ -21,7 +21,7 @@ Let's imagine a health care application for quickly entering templated impressio
 And we we're given a reducer that looks like this...
 
 ```js
-const reportingReducer(state, action) => {
+const reportingReducer = (state, action) => {
     switch(action.type) {
         CASE SET_IMPRESSIONS:
             return { ...state, impressions: action.impressions };
@@ -111,7 +111,7 @@ const impressionsReducer = (action, state) => {
 How can we make this hypothetical sub-reducer a reality?  By adding the following line to our main reducer...
 
 ```js
-const reportingReducer(initState, action) => {
+const reportingReducer = (initState, action) => {
     const state = { ...initState, impressions: impressionsReducer(action, initState.impressions) }
 
     switch(action.type) {
@@ -143,7 +143,7 @@ const reportingReducer = (initState, action) => {
 Trying to come up with names for the intermediate variables state1 and state2 and remembering to use the correct one is error prone and tedious.  I prefer the following tweaks (using lenses (add link to lens tutorial?) and the ramda's lensProp, over & pipe) to make this read better...
 
 ```js
-const reportingReducer(initState, action) => {
+const reportingReducer = (initState, action) => {
     const state = pipe(
         over(lensProp('impressions'), impressionsReducer(action)),
         over(lensProp('prevStudies'), prevStudiesReducer(action)),
