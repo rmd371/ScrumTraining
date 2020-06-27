@@ -128,7 +128,7 @@ Notice that two things changed...
 If you only have one sub-reducer in the main reducer, the code above might be a pretty good implementation.  However, multiple sub-reducers start to get a bit ugly...
 
 ```js
-const reportingReducer(initState, action) => {
+const reportingReducer = (initState, action) => {
     const state1 = { ...initState, impressions: impressionsReducer(action, initState.impressions) }
     const state2 = { ...state1, prevStudies: prevStudiesReducer(action, state1.prevStudies) }
     const state = { ...state2, prevImpressions: prevImpressionsReducer(action, state2.prevImpressions) }
