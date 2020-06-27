@@ -102,6 +102,8 @@ const impressionsReducer = (action, state) => {
             return [...without(action.impressions, state), ...action.impressions];
         CASE REMOVE_SELECTED_IMPRESSIONS: 
             return without(action.impressions, state);
+        default:
+            return state;
     }
 }
 ```
