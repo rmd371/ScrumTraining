@@ -17,30 +17,24 @@ newtype Reader e a = Reader (e -> a)
 
 -- runReader :: forall e a. Reader e a -> e -> a
 
---derive newtype instance semigroupOp :: Semigroup a ⇒ Semigroup (Reader s a)
 -- instance semigroupReader :: Semigroup a => Semigroup (Reader e a) where
 --   -- append :: a -> a -> a
 --   -- append :: Reader e a -> Reader e a -> Reader e a
 
--- derive newtype instance functorStat3 :: Functor (Reader s)
 -- instance functorReader :: Functor (Reader s) where
 --   -- map :: forall a b. (a -> b) -> f a -> f b
 
--- derive newtype instance applyReader :: Apply (Reader e)
 -- instance applyReader :: Apply (Reader e) where
 --   -- apply :: forall a b. f (a -> b) -> f a -> f b
 
---derive newtype instance applicativeReader :: Apply (Reader e) => Applicative (Reader e)
 -- instance applicativeReader :: Applicative (Reader s) where
 --   -- pure :: forall a. a -> f a
 
--- derive newtype instance bindReader :: Bind (Reader e)
 -- instance bindReader :: Bind (Reader e) where
 --   -- bind :: forall a b. m a -> (a -> m b) -> m b
 
 -- instance monadReader :: Monad (Reader e)
 
--- -- derive newtype instance monadAskReader :: MonadAsk e (Reader e)
 -- instance askReader :: MonadAsk e (Reader e) where
 --   -- ask :: forall e a. (e -> a) -> Reader e a
 
