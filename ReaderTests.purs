@@ -49,8 +49,8 @@ typeRdr = Reader (\e -> e.type)
 buildTypeRdr :: Reader Env String
 buildTypeRdr = Reader (\e -> e.buildType)
 
-typePlusBuildType :: Reader Env String
-typePlusBuildType = typeRdr <> buildTypeRdr
+-- typePlusBuildType :: Reader Env String
+-- typePlusBuildType = typeRdr <> buildTypeRdr
 
 rankRdr :: Reader Env Int
 rankRdr = Reader (\e -> e.rank)
