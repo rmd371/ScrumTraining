@@ -11,7 +11,9 @@ import Control.Monad.Reader.Class (class MonadAsk, ask)
 
 newtype Reader e a = Reader (e -> a)
 
--- TODO: comment in the unit tests below after you've implemented the associated method
+-- TODO: 
+-- copy this file into https://try.purescript.org
+-- comment in the unit tests below after you've implemented the associated method
 
 -- runReader :: forall e a. Reader e a -> e -> a
 
