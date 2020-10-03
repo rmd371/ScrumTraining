@@ -7,7 +7,7 @@ import TryPureScript (render, withConsole, h1, text)
 import Test.Unit.Main (runTest)
 import Test.Unit.Assert as Assert
 import Test.Unit (suite, test)
-import Control.Monad.Reader.Class (class MonadAsk, ask)
+--import Control.Monad.Reader.Class (class MonadAsk, ask)
 
 newtype Reader e a = Reader (e -> a)
 
